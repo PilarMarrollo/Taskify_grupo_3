@@ -4,15 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Taskify - Lista de tareas</title>
-    <!-- Asegúrate de que la ruta del archivo CSS sea correcta -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <!-- Pantalla de bienvenida -->
     <section id="welcome-screen" class="screen active">
-      <h1>¡Bienvenido a Taskify!</h1>
-      <p>Organiza tus tareas de forma simple y rápida.</p>
-      <button id="start-btn">Comenzar</button>
+      <div class="welcome-container">
+        <h1>Taskify</h1>
+        <p>
+          ¡Organiza tu vida de manera simple!<br />Gestiona tus tareas diarias y
+          mantente al día.
+        </p>
+        <button id="start-btn">Comenzar</button>
+      </div>
     </section>
 
     <!-- Pantalla principal de tareas -->
@@ -27,6 +31,9 @@
         <button class="filter-btn" data-filter="completed">Completadas</button>
       </div>
       <ul id="task-list"></ul>
+      <div class="bottom-nav">
+        <button id="go-welcome" title="Ir a bienvenida">🏠</button>
+      </div>
     </section>
 
     <!-- Pantalla para agregar/editar tarea -->
@@ -35,7 +42,7 @@
         <h2 id="form-title">Agregar Tarea</h2>
         <button id="close-form-btn" aria-label="Cerrar">←</button>
       </header>
-      <form id="task-form">
+      <form id="task-form" autocomplete="off">
         <input type="hidden" id="task-id" />
         <label>
           Título:
@@ -44,14 +51,20 @@
             id="task-title"
             required
             maxlength="50"
-            autocomplete="off"
+            placeholder="Ej. Estudiar para el examen"
           />
         </label>
         <label>
           Descripción:
-          <textarea id="task-desc" rows="3" maxlength="120"></textarea>
+          <textarea
+            id="task-desc"
+            rows="3"
+            maxlength="120"
+            placeholder="Detalles opcionales"
+          ></textarea>
         </label>
         <button type="submit" id="save-task-btn">Guardar</button>
+        <div id="form-msg"></div>
       </form>
     </section>
 
