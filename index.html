@@ -2,7 +2,10 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <title>Taskify - Lista de tareas</title>
     <!-- Fuente Poppins -->
     <link
@@ -50,6 +53,9 @@
           <i class="ph ph-check"></i> Completadas
         </button>
       </div>
+    <div id="loading-state" class="loading-state" aria-live="polite" aria-atomic="true" hidden>
+      Cargando tareas...
+    </div>
       <ul id="task-list"></ul>
       <nav class="bottom-nav">
         <button id="go-welcome" title="Inicio">
@@ -75,18 +81,26 @@
           <input
             type="text"
             id="task-title"
+            name="title"
             required
             maxlength="50"
             placeholder="Ej. Estudiar para el examen"
+            inputmode="text"
+            autocapitalize="sentences"
+            enterkeyhint="next"
           />
         </label>
         <label>
           Descripción:
           <textarea
             id="task-desc"
+            name="description"
             rows="3"
             maxlength="120"
             placeholder="Detalles opcionales"
+            inputmode="text"
+            autocapitalize="sentences"
+            enterkeyhint="done"
           ></textarea>
         </label>
         <button type="submit" id="save-task-btn">
