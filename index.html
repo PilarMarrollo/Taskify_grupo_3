@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskify - Lista de tareas</title>
+    <!-- Asegúrate de que la ruta del archivo CSS sea correcta -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Pantalla de bienvenida -->
+    <section id="welcome-screen" class="screen active">
+      <h1>¡Bienvenido a Taskify!</h1>
+      <p>Organiza tus tareas de forma simple y rápida.</p>
+      <button id="start-btn">Comenzar</button>
+    </section>
+
+    <!-- Pantalla principal de tareas -->
+    <section id="todo-screen" class="screen">
+      <header>
+        <h2>Mis Tareas</h2>
+        <button id="add-task-btn" aria-label="Agregar tarea">+</button>
+      </header>
+      <div id="filters">
+        <button class="filter-btn active" data-filter="all">Todas</button>
+        <button class="filter-btn" data-filter="pending">Pendientes</button>
+        <button class="filter-btn" data-filter="completed">Completadas</button>
+      </div>
+      <ul id="task-list"></ul>
+    </section>
+
+    <!-- Pantalla para agregar/editar tarea -->
+    <section id="task-form-screen" class="screen">
+      <header>
+        <h2 id="form-title">Agregar Tarea</h2>
+        <button id="close-form-btn" aria-label="Cerrar">←</button>
+      </header>
+      <form id="task-form">
+        <input type="hidden" id="task-id" />
+        <label>
+          Título:
+          <input
+            type="text"
+            id="task-title"
+            required
+            maxlength="50"
+            autocomplete="off"
+          />
+        </label>
+        <label>
+          Descripción:
+          <textarea id="task-desc" rows="3" maxlength="120"></textarea>
+        </label>
+        <button type="submit" id="save-task-btn">Guardar</button>
+      </form>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>
