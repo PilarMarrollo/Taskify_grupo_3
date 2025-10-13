@@ -73,8 +73,9 @@ function renderTasks() {
     const info = document.createElement("li");
     info.textContent = "No hay tareas.";
     info.style.textAlign = "center";
-    info.style.color = "#aaa";
+    info.style.color = "#232323";
     info.style.padding = "1.2em 0";
+    info.style.fontWeight = "500";
     taskList.appendChild(info);
     return;
   }
@@ -107,12 +108,14 @@ function renderTasks() {
 
     const editBtn = document.createElement("button");
     editBtn.className = "action-btn edit";
-    editBtn.textContent = "Editar";
+    editBtn.title = "Editar";
+    editBtn.innerHTML = `<i class="ph ph-pencil-simple"></i> Editar`;
     editBtn.onclick = () => openTaskForm(task);
 
     const delBtn = document.createElement("button");
     delBtn.className = "action-btn delete";
-    delBtn.textContent = "Eliminar";
+    delBtn.title = "Eliminar";
+    delBtn.innerHTML = `<i class="ph ph-trash"></i> Eliminar`;
     delBtn.onclick = () => deleteTask(task.id);
 
     actions.appendChild(editBtn);
@@ -133,13 +136,13 @@ function openTaskForm(task = null) {
   formMsg.textContent = "";
   editingTaskId = null;
   if (task) {
-    formTitle.textContent = "Editar Tarea";
+    formTitle.innerHTML = `<i class="ph ph-pencil-simple"></i> Editar Tarea`;
     document.getElementById("task-id").value = task.id;
     document.getElementById("task-title").value = task.title;
     document.getElementById("task-desc").value = task.desc;
     editingTaskId = task.id;
   } else {
-    formTitle.textContent = "Agregar Tarea";
+    formTitle.innerHTML = `<i class="ph ph-plus-circle"></i> Agregar Tarea`;
   }
   showScreen("form");
 }

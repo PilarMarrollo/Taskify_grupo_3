@@ -4,44 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Taskify - Lista de tareas</title>
+    <!-- Fuente Poppins -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    />
+    <!-- Phosphor Icons CDN -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- HEADER: siempre arriba -->
+    <header class="main-header">
+      <span class="logo-text">
+        <i class="ph ph-check-square"></i> Taskify
+      </span>
+    </header>
+
     <!-- Pantalla de bienvenida -->
     <section id="welcome-screen" class="screen active">
       <div class="welcome-container">
-        <h1>Taskify</h1>
         <p>
           ¡Organiza tu vida de manera simple!<br />Gestiona tus tareas diarias y
           mantente al día.
         </p>
-        <button id="start-btn">Comenzar</button>
+        <button id="start-btn">
+          <span>Comenzar</span> <i class="ph ph-arrow-right"></i>
+        </button>
       </div>
     </section>
 
     <!-- Pantalla principal de tareas -->
     <section id="todo-screen" class="screen">
-      <header>
-        <h2>Mis Tareas</h2>
-        <button id="add-task-btn" aria-label="Agregar tarea">+</button>
-      </header>
       <div id="filters">
-        <button class="filter-btn active" data-filter="all">Todas</button>
-        <button class="filter-btn" data-filter="pending">Pendientes</button>
-        <button class="filter-btn" data-filter="completed">Completadas</button>
+        <button class="filter-btn active" data-filter="all">
+          <i class="ph ph-list-bullets"></i> Todas
+        </button>
+        <button class="filter-btn" data-filter="pending">
+          <i class="ph ph-clock"></i> Pendientes
+        </button>
+        <button class="filter-btn" data-filter="completed">
+          <i class="ph ph-check"></i> Completadas
+        </button>
       </div>
       <ul id="task-list"></ul>
-      <div class="bottom-nav">
-        <button id="go-welcome" title="Ir a bienvenida">🏠</button>
-      </div>
+      <nav class="bottom-nav">
+        <button id="go-welcome" title="Inicio">
+          <i class="ph ph-house"></i>
+        </button>
+      </nav>
     </section>
 
     <!-- Pantalla para agregar/editar tarea -->
     <section id="task-form-screen" class="screen">
-      <header>
-        <h2 id="form-title">Agregar Tarea</h2>
-        <button id="close-form-btn" aria-label="Cerrar">←</button>
-      </header>
+      <div class="form-header">
+        <span id="form-title"
+          ><i class="ph ph-plus-circle"></i> Agregar Tarea</span
+        >
+        <button id="close-form-btn" aria-label="Cerrar">
+          <i class="ph ph-arrow-left"></i>
+        </button>
+      </div>
       <form id="task-form" autocomplete="off">
         <input type="hidden" id="task-id" />
         <label>
@@ -63,10 +89,19 @@
             placeholder="Detalles opcionales"
           ></textarea>
         </label>
-        <button type="submit" id="save-task-btn">Guardar</button>
+        <button type="submit" id="save-task-btn">
+          <i class="ph ph-check-fat"></i> Guardar
+        </button>
         <div id="form-msg"></div>
       </form>
     </section>
+
+    <!-- FAB: Botón más pequeño y elegante, centrado y flotante -->
+    <div class="fab-container">
+      <button id="add-task-btn" aria-label="Agregar tarea">
+        <i class="ph ph-plus"></i>
+      </button>
+    </div>
 
     <script src="script.js"></script>
   </body>
