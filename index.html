@@ -2,17 +2,14 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Taskify - Lista de tareas</title>
-    <!-- Fuente Poppins -->
+    <!-- Poppins Font -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
     />
-    <!-- Phosphor Icons CDN -->
+    <!-- Phosphor Icons -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"
@@ -20,103 +17,88 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- HEADER: siempre arriba -->
-    <header class="main-header">
-      <span class="logo-text">
-        <i class="ph ph-check-square"></i> Taskify
-      </span>
-    </header>
-
-    <!-- Pantalla de bienvenida -->
-    <section id="welcome-screen" class="screen active">
-      <div class="welcome-container">
-        <p>
-          ¡Organiza tu vida de manera simple!<br />Gestiona tus tareas diarias y
-          mantente al día.
-        </p>
-        <button id="start-btn">
-          <span>Comenzar</span> <i class="ph ph-arrow-right"></i>
-        </button>
-      </div>
-    </section>
-
-    <!-- Pantalla principal de tareas -->
-    <section id="todo-screen" class="screen">
-      <div id="filters">
-        <button class="filter-btn active" data-filter="all">
-          <i class="ph ph-list-bullets"></i> Todas
-        </button>
-        <button class="filter-btn" data-filter="pending">
-          <i class="ph ph-clock"></i> Pendientes
-        </button>
-        <button class="filter-btn" data-filter="completed">
-          <i class="ph ph-check"></i> Completadas
-        </button>
-      </div>
-    <div id="loading-state" class="loading-state" aria-live="polite" aria-atomic="true" hidden>
-      Cargando tareas...
-    </div>
-      <ul id="task-list"></ul>
-      <nav class="bottom-nav">
-        <button id="go-welcome" title="Inicio">
-          <i class="ph ph-house"></i>
-        </button>
-      </nav>
-    </section>
-
-    <!-- Pantalla para agregar/editar tarea -->
-    <section id="task-form-screen" class="screen">
-      <div class="form-header">
-        <span id="form-title"
-          ><i class="ph ph-plus-circle"></i> Agregar Tarea</span
-        >
-        <button id="close-form-btn" aria-label="Cerrar">
-          <i class="ph ph-arrow-left"></i>
-        </button>
-      </div>
-      <form id="task-form" autocomplete="off">
-        <input type="hidden" id="task-id" />
-        <label>
-          Título:
+    <main class="main-container">
+      <!-- HOME: Header tipo "Hello, Pilar" -->
+      <section class="top-section" id="home-section">
+        <div class="top-header">
+          <div>
+            <div class="user-greeting">¡Hola, Pilar!</div>
+            <div class="today-date" id="today-date"></div>
+          </div>
+          <div class="user-avatar"><i class="ph ph-user"></i></div>
+        </div>
+        <div class="card highlight-card">
+          <div class="highlight-title">Tu desafío de hoy</div>
+          <div class="highlight-desc">
+            ¡Agrega y completa al menos 3 tareas!
+          </div>
+        </div>
+      </section>
+      <!-- TASKS: Lista de tareas -->
+      <section class="task-section" id="tasks-section" style="display: none">
+        <h2 class="section-title">Tus tareas</h2>
+        <ul id="task-list" class="task-list"></ul>
+        <form id="add-task-form" class="add-task-form">
           <input
             type="text"
-            id="task-title"
-            name="title"
-            required
+            id="new-task-input"
+            placeholder="Nueva tarea..."
             maxlength="50"
-            placeholder="Ej. Estudiar para el examen"
-            inputmode="text"
-            autocapitalize="sentences"
-            enterkeyhint="next"
+            autocomplete="off"
+            required
           />
-        </label>
-        <label>
-          Descripción:
-          <textarea
-            id="task-desc"
-            name="description"
-            rows="3"
-            maxlength="120"
-            placeholder="Detalles opcionales"
-            inputmode="text"
-            autocapitalize="sentences"
-            enterkeyhint="done"
-          ></textarea>
-        </label>
-        <button type="submit" id="save-task-btn">
-          <i class="ph ph-check-fat"></i> Guardar
-        </button>
-        <div id="form-msg"></div>
-      </form>
-    </section>
+          <button type="submit" aria-label="Agregar tarea">
+            <i class="ph ph-plus"></i>
+          </button>
+        </form>
+      </section>
+      <!-- PROFILE: Perfil de usuario -->
+      <section
+        class="profile-section"
+        id="profile-section"
+        style="display: none"
+      >
+        <div class="profile-card card">
+          <div class="profile-avatar"><i class="ph ph-user"></i></div>
+          <div class="profile-info">
+            <div class="profile-hello">Hola, Pilar</div>
+            <div class="profile-name">Pilar Marrollo</div>
+            <div class="profile-email">pilar.marrollo@email.com</div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-    <!-- FAB: Botón más pequeño y elegante, centrado y flotante -->
-    <div class="fab-container">
-      <button id="add-task-btn" aria-label="Agregar tarea">
-        <i class="ph ph-plus"></i>
+    <!-- FAB flotante para cargar tareas rápido -->
+    <button
+      id="add-task-btn"
+      class="fab"
+      aria-label="Agregar tarea"
+      style="display: none"
+    >
+      <i class="ph ph-plus"></i>
+    </button>
+
+    <!-- Bottom nav estilo mobile completo -->
+    <nav class="navbar">
+      <button
+        class="nav-btn active"
+        id="nav-home"
+        aria-label="Inicio"
+        tabindex="0"
+      >
+        <i class="ph ph-house"></i>
+        <span>Inicio</span>
       </button>
-    </div>
-
+      <button class="nav-btn" id="nav-tasks" aria-label="Tareas" tabindex="0">
+        <i class="ph ph-list-checks"></i>
+        <span>Tareas</span>
+      </button>
+      <button class="nav-btn" id="nav-profile" aria-label="Perfil" tabindex="0">
+        <i class="ph ph-user"></i>
+        <span>Perfil</span>
+      </button>
+    </nav>
     <script src="script.js"></script>
   </body>
 </html>
