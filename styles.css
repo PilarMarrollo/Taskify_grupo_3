@@ -42,6 +42,97 @@ body {
   padding-bottom: 90px;
 }
 
+/* WELCOME SCREEN */
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(
+    180deg,
+    rgba(244, 242, 250, 0.9),
+    rgba(255, 255, 255, 0.7)
+  );
+  z-index: 99999;
+  padding: 2rem 1rem;
+}
+.welcome-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  padding: 2rem 1.4rem;
+  border-radius: 1.2rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-boost) 28%,
+    var(--mid-gradient) 58%,
+    var(--blue-boost) 82%,
+    var(--blue) 100%
+  );
+  color: var(--white);
+  box-shadow: 0 12px 40px rgba(79, 214, 255, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+.welcome-illustration {
+  font-size: 2.6rem;
+  margin-bottom: 0.6rem;
+  opacity: 0.95;
+}
+.welcome-title {
+  font-size: 1.45rem;
+  margin: 0.2rem 0 0.4rem;
+  font-weight: 700;
+}
+.welcome-sub {
+  margin: 0 0 1.2rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Welcome buttons */
+.welcome-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+.btn-primary {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--white);
+  padding: 0.75rem 1rem;
+  border-radius: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 180px;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+}
+.btn-primary:active {
+  transform: translateY(1px) scale(0.995);
+}
+.btn-ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.welcome-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
 /* Top */
 .top-section {
   padding: 1.5em 1em 0.7em 1em;
@@ -99,7 +190,6 @@ body {
   );
   color: var(--white);
   box-shadow: 0 6px 26px rgba(255, 79, 139, 0.14);
-  /* agregar una ligera superposición por si queremos un efecto más fundido */
   background-origin: border-box;
 }
 .highlight-title {
@@ -233,11 +323,18 @@ body {
   border: 1.5px solid var(--blue);
   box-shadow: 0 6px 18px rgba(79, 214, 255, 0.08);
 }
+
+/* Fix icon deformation in mobile - button rules for stable size */
 .add-task-form button {
   width: 48px;
   height: 48px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   border: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   /* Gradiente más uniforme con paradas intermedias */
   background: linear-gradient(
     135deg,
@@ -247,17 +344,28 @@ body {
     var(--blue) 100%
   );
   color: var(--white);
-  font-size: 1.08em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(79, 214, 255, 0.12);
   transition: background 0.16s, transform 0.13s, box-shadow 0.13s;
+  font-size: 0; /* avoid inherited font-size affecting icon */
+  line-height: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .add-task-form button:active {
   transform: scale(0.97);
   box-shadow: 0 4px 14px rgba(79, 214, 255, 0.09);
+}
+.add-task-form button .ph,
+.add-task-form button i.ph {
+  display: block;
+  font-size: 20px;
+  line-height: 1;
+  width: auto;
+  height: auto;
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .add-task-form i.ph {
   font-size: 1.43em;
@@ -422,70 +530,6 @@ button,
   color: #bbb;
 }
 
-/* Make the FAB-like add button a strict square and center its icon precisely.
-   Use fixed px sizes for the icon so it doesn't scale unpredictably with font-size.
-   Use aspect-ratio for future-proofing, remove extra font-size inheritance,
-   and add a small responsive tweak for very narrow screens. */
-.add-task-form button {
-  width: 48px;
-  height: 48px;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  border: none;
-  padding: 0; /* remove inner padding that can misalign the icon */
-  display: inline-flex; /* ensure perfect centering */
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-boost) 32%,
-    var(--mid-gradient) 60%,
-    var(--blue) 100%
-  );
-  color: var(--white);
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(79, 214, 255, 0.12);
-  transition: background 0.16s, transform 0.13s, box-shadow 0.13s;
-  /* Prevent the button's font-size from affecting the icon: the icon will get its own size */
-  font-size: 0;
-  line-height: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Explicit icon rules: fixed pixel size, block layout and neutral baseline */
-.add-task-form button .ph,
-.add-task-form button i.ph {
-  display: block; /* avoid inline baseline shifts */
-  font-size: 20px; /* fixed size so icon doesn't stretch */
-  line-height: 1;
-  width: auto;
-  height: auto;
-  transform: translateY(0); /* small adjustment point if needed */
-  color: inherit;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Active / pressed state keeps the same visual balance */
-.add-task-form button:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 14px rgba(79, 214, 255, 0.09);
-}
-
-/* Slightly smaller button & icon on very small screens to avoid clipping */
-@media (max-width: 380px) {
-  .add-task-form button {
-    width: 44px;
-    height: 44px;
-  }
-  .add-task-form button .ph,
-  .add-task-form button i.ph {
-    font-size: 18px;
-  }
-}
-
 /* Responsive */
 @media (min-width: 500px) {
   .main-container,
@@ -497,5 +541,25 @@ button,
   }
   #task-list {
     max-width: 420px;
+  }
+}
+@media (max-width: 380px) {
+  .add-task-form button {
+    width: 44px;
+    height: 44px;
+  }
+  .add-task-form button .ph,
+  .add-task-form button i.ph {
+    font-size: 18px;
+  }
+  .welcome-card {
+    padding: 1.6rem 1rem;
+  }
+  .welcome-title {
+    font-size: 1.25rem;
+  }
+  .btn-primary {
+    min-width: 150px;
+    padding: 0.6rem 0.8rem;
   }
 }

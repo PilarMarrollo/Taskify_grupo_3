@@ -18,6 +18,12 @@ const addTaskForm = document.getElementById("add-task-form");
 const newTaskInput = document.getElementById("new-task-input");
 const taskList = document.getElementById("task-list");
 
+// Welcome elements
+const welcomeScreen = document.getElementById("welcome-screen");
+const startBtn = document.getElementById("start-btn");
+const skipBtn = document.getElementById("skip-btn");
+const closeWelcome = document.getElementById("close-welcome");
+
 function navigate(section) {
   // Hide all
   homeSection.style.display = "none";
@@ -49,7 +55,7 @@ navTasks.onclick = () => navigate("tasks");
 navProfile.onclick = () => navigate("profile");
 fab.onclick = () => {
   navigate("tasks");
-  newTaskInput.focus();
+  setTimeout(() => newTaskInput.focus(), 120);
 };
 
 // FECHA HOY en header
@@ -84,7 +90,14 @@ document.addEventListener("DOMContentLoaded", () => {
       months[d.getMonth()]
     }.`;
   }
-  navigate("home");
+
+  // Show welcome screen if user hasn't dismissed it before
+  const seenWelcome = localStorage.getItem("seenWelcome");
+  if (!seenWelcome) {
+    showWelcome();
+  } else {
+    navigate("home");
+  }
 });
 
 // TAREAS
@@ -160,3 +173,54 @@ if (addTaskForm) {
     renderTasks();
   };
 }
+
+/* ========== Welcome screen behavior ========== */
+function showWelcome() {
+  if (!welcomeScreen) return;
+  welcomeScreen.style.display = "grid";
+  // hide underlying content focusable elements for accessibility
+  document.body.style.overflow = "hidden";
+  // focus primary button
+  setTimeout(() => startBtn && startBtn.focus(), 80);
+}
+function hideWelcome() {
+  if (!welcomeScreen) return;
+  welcomeScreen.style.display = "none";
+  document.body.style.overflow = "";
+}
+
+// start button: go directly to tasks and mark welcome as seen
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    localStorage.setItem("seenWelcome", "1");
+    hideWelcome();
+    navigate("tasks");
+    setTimeout(() => newTaskInput.focus(), 180);
+  });
+}
+// skip: go to home but don't mark as seen (user will see welcome again next load)
+if (skipBtn) {
+  skipBtn.addEventListener("click", () => {
+    hideWelcome();
+    navigate("home");
+  });
+}
+// close: hides now and mark as seen (so users who close don't see it later)
+if (closeWelcome) {
+  closeWelcome.addEventListener("click", () => {
+    localStorage.setItem("seenWelcome", "1");
+    hideWelcome();
+    navigate("home");
+  });
+}
+
+// Accessibility: allow Escape to close welcome
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (welcomeScreen && welcomeScreen.style.display !== "none") {
+      localStorage.setItem("seenWelcome", "1");
+      hideWelcome();
+      navigate("home");
+    }
+  }
+});

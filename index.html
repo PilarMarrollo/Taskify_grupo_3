@@ -18,6 +18,44 @@
   </head>
   <body>
     <main class="main-container">
+      <!-- WELCOME / ONBOARDING SCREEN -->
+      <section
+        class="welcome-screen"
+        id="welcome-screen"
+        aria-modal="true"
+        role="dialog"
+      >
+        <div class="welcome-card card">
+          <div class="welcome-illustration" aria-hidden="true">
+            <i class="ph ph-sparkle"></i>
+          </div>
+          <h1 class="welcome-title">Bienvenido a Taskify</h1>
+          <p class="welcome-sub">
+            Empezá a sumar tareas, organizá tu día y completá tus objetivos.
+          </p>
+          <div class="welcome-actions">
+            <button
+              id="start-btn"
+              class="btn-primary"
+              aria-label="Empezar a sumar tareas"
+            >
+              Empezar a sumar tareas
+            </button>
+            <button id="skip-btn" class="btn-ghost" aria-label="Ir a la app">
+              Ir a la app
+            </button>
+          </div>
+          <button
+            id="close-welcome"
+            class="welcome-close"
+            aria-label="Cerrar bienvenida"
+            title="Cerrar"
+          >
+            ✕
+          </button>
+        </div>
+      </section>
+
       <!-- HOME: Header tipo "Hello, Grupo 3" -->
       <section class="top-section" id="home-section">
         <div class="top-header">
@@ -34,6 +72,7 @@
           </div>
         </div>
       </section>
+
       <!-- TASKS: Lista de tareas -->
       <section class="task-section" id="tasks-section" style="display: none">
         <h2 class="section-title">Tus tareas</h2>
@@ -52,6 +91,7 @@
           </button>
         </form>
       </section>
+
       <!-- PROFILE: Perfil de usuario -->
       <section
         class="profile-section"
@@ -62,8 +102,8 @@
           <div class="profile-avatar"><i class="ph ph-user"></i></div>
           <div class="profile-info">
             <div class="profile-hello">Hola, Grupo 3</div>
-            <div class="profile-name">Grupo 3</div>
-            <div class="profile-email">grupo3@email.com</div>
+            <div class="profile-name">Grupo 3 Marrollo</div>
+            <div class="profile-email">grupo3.marrollo@email.com</div>
           </div>
         </div>
       </section>
