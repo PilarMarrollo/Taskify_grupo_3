@@ -422,8 +422,6 @@ button,
   color: #bbb;
 }
 
-* Fix icon deformation in mobile - overrides (append to styles.css) */
-
 /* Make the FAB-like add button a strict square and center its icon precisely.
    Use fixed px sizes for the icon so it doesn't scale unpredictably with font-size.
    Use aspect-ratio for future-proofing, remove extra font-size inheritance,
