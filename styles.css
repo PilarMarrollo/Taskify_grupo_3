@@ -422,6 +422,72 @@ button,
   color: #bbb;
 }
 
+* Fix icon deformation in mobile - overrides (append to styles.css) */
+
+/* Make the FAB-like add button a strict square and center its icon precisely.
+   Use fixed px sizes for the icon so it doesn't scale unpredictably with font-size.
+   Use aspect-ratio for future-proofing, remove extra font-size inheritance,
+   and add a small responsive tweak for very narrow screens. */
+.add-task-form button {
+  width: 48px;
+  height: 48px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  padding: 0; /* remove inner padding that can misalign the icon */
+  display: inline-flex; /* ensure perfect centering */
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-boost) 32%,
+    var(--mid-gradient) 60%,
+    var(--blue) 100%
+  );
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(79, 214, 255, 0.12);
+  transition: background 0.16s, transform 0.13s, box-shadow 0.13s;
+  /* Prevent the button's font-size from affecting the icon: the icon will get its own size */
+  font-size: 0;
+  line-height: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Explicit icon rules: fixed pixel size, block layout and neutral baseline */
+.add-task-form button .ph,
+.add-task-form button i.ph {
+  display: block; /* avoid inline baseline shifts */
+  font-size: 20px; /* fixed size so icon doesn't stretch */
+  line-height: 1;
+  width: auto;
+  height: auto;
+  transform: translateY(0); /* small adjustment point if needed */
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Active / pressed state keeps the same visual balance */
+.add-task-form button:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 14px rgba(79, 214, 255, 0.09);
+}
+
+/* Slightly smaller button & icon on very small screens to avoid clipping */
+@media (max-width: 380px) {
+  .add-task-form button {
+    width: 44px;
+    height: 44px;
+  }
+  .add-task-form button .ph,
+  .add-task-form button i.ph {
+    font-size: 18px;
+  }
+}
+
 /* Responsive */
 @media (min-width: 500px) {
   .main-container,
