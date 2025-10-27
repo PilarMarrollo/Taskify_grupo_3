@@ -13,101 +13,39 @@
       href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"
     />
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      /* Pequeños estilos de apoyo para que se vea OK sin el CSS completo */
-      body {
-        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial;
-        margin: 0;
-        padding: 0;
-      }
-      .navbar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 64px;
-        display: flex;
-        background: #fff;
-        border-top: 1px solid #e6e6e6;
-      }
-      .nav-btn {
-        flex: 1;
-        border: 0;
-        background: transparent;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        font-size: 12px;
-      }
-      .nav-btn.active {
-        background: #f3f7ff;
-      }
-      .main-container {
-        padding: 1rem;
-        padding-bottom: 80px;
-      }
-      .screen {
-        display: none;
-      }
-      .screen.active {
-        display: block;
-      }
-      .task-list {
-        list-style: none;
-        padding: 0;
-        margin: 0.5rem 0;
-      }
-      .task-list li {
-        padding: 0.6rem;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-      }
-      .task-list li.completed {
-        opacity: 0.7;
-        text-decoration: line-through;
-      }
-      .task-actions {
-        margin-left: auto;
-      }
-      button {
-        cursor: pointer;
-      }
-    </style>
   </head>
   <body>
     <main class="main-container">
       <!-- ===== HOME / DASHBOARD ===== -->
-      <section class="screen" id="home-section">
+      <section class="screen active" id="home-section">
         <header class="top-header">
           <div>
             <h1 class="main-title">Tu progreso de hoy</h1>
             <p class="subtitle" id="current-date"></p>
           </div>
-          <div class="progress-circle">
+          <div class="progress-circle card">
             <div class="progress-number" id="progress-number">0%</div>
           </div>
         </header>
 
         <!-- OBJETIVO DIARIO -->
-        <section class="daily-goal">
+        <section class="daily-goal card">
           <h3>Objetivo diario</h3>
           <input
             type="number"
             id="daily-goal-input"
             placeholder="Ej: 5 tareas"
             min="1"
+            aria-label="Objetivo diario"
           />
-          <button id="save-goal">Guardar</button>
+          <button id="save-goal" class="btn" aria-label="Guardar objetivo">
+            Guardar
+          </button>
           <p id="goal-display">Meta: 0 tareas</p>
         </section>
 
         <!-- RACHA DE PRODUCTIVIDAD -->
-        <section class="streak-section">
+        <section class="streak-section card">
           <h3>🔥 Racha de productividad</h3>
           <p>
             Días consecutivos completando tareas:
@@ -116,21 +54,21 @@
         </section>
 
         <section class="metrics">
-          <div class="metric-card">
+          <div class="metric-card card">
             <h3>Tareas totales</h3>
             <p id="total-tasks">0</p>
           </div>
-          <div class="metric-card">
+          <div class="metric-card card">
             <h3>Completadas</h3>
             <p id="completed-tasks">0</p>
           </div>
-          <div class="metric-card">
+          <div class="metric-card card">
             <h3>Pendientes</h3>
             <p id="pending-tasks">0</p>
           </div>
         </section>
 
-        <section class="weekly-summary">
+        <section class="weekly-summary card">
           <h2>Resumen semanal</h2>
           <div class="chart-bars">
             <div class="bar" style="--value: 70%" data-day="Lun"></div>
@@ -146,17 +84,16 @@
       <section class="screen" id="tasks-section">
         <div class="task-header">
           <h2>Mis tareas</h2>
-          <select id="filter-tasks">
+          <select id="filter-tasks" aria-label="Filtrar tareas">
             <option value="all">Todas</option>
             <option value="pending">Pendientes</option>
             <option value="completed">Completadas</option>
           </select>
         </div>
 
-        <!-- FILTRO POR CATEGORÍA -->
         <div class="task-filter-category">
           <label for="filter-category">Categoría:</label>
-          <select id="filter-category">
+          <select id="filter-category" aria-label="Filtrar por categoría">
             <option value="all">Todas</option>
             <option value="Trabajo">Trabajo</option>
             <option value="Estudio">Estudio</option>
@@ -166,24 +103,28 @@
 
         <ul id="task-list" class="task-list"></ul>
 
-        <!-- FECHA LÍMITE -->
-        <form id="add-task-form" class="add-task-form">
+        <form
+          id="add-task-form"
+          class="add-task-form card"
+          aria-label="Agregar tarea"
+        >
           <input
             type="text"
             id="new-task-input"
             placeholder="Nueva tarea..."
-            maxlength="50"
+            maxlength="100"
             autocomplete="off"
             required
+            aria-label="Nueva tarea"
           />
-          <select id="new-task-category">
+          <select id="new-task-category" aria-label="Categoria tarea">
             <option value="General">General</option>
             <option value="Trabajo">Trabajo</option>
             <option value="Estudio">Estudio</option>
             <option value="Personal">Personal</option>
           </select>
-          <input type="date" id="new-task-deadline" />
-          <button type="submit" aria-label="Agregar tarea">
+          <input type="date" id="new-task-deadline" aria-label="Fecha límite" />
+          <button type="submit" aria-label="Agregar tarea" class="btn">
             <i class="ph ph-plus"></i> Agregar
           </button>
         </form>
@@ -205,13 +146,13 @@
           <p>Tareas en curso: <span id="stat-pending">0</span></p>
         </div>
 
-        <!-- CAMBIO DE TEMA -->
         <div class="theme-toggle">
           <h4>Tema visual</h4>
-          <button id="toggle-theme">Cambiar a modo oscuro 🌙</button>
+          <button id="toggle-theme" aria-pressed="false">
+            Cambiar a modo oscuro 🌙
+          </button>
         </div>
 
-        <!-- LOGROS -->
         <div class="achievements">
           <h4>🏅 Logros</h4>
           <ul id="achievements-list">
@@ -222,23 +163,23 @@
     </main>
 
     <!-- ===== NAVBAR ===== -->
-    <nav class="navbar">
-      <button class="nav-btn active" id="nav-home">
+    <nav class="navbar" role="navigation" aria-label="Navegación principal">
+      <button class="nav-btn active" id="nav-home" aria-label="Ir a inicio">
         <i class="ph ph-house"></i>
         <span>Inicio</span>
       </button>
-      <button class="nav-btn" id="nav-tasks">
+      <button class="nav-btn" id="nav-tasks" aria-label="Ir a tareas">
         <i class="ph ph-list-checks"></i>
         <span>Tareas</span>
       </button>
-      <button class="nav-btn" id="nav-profile">
+      <button class="nav-btn" id="nav-profile" aria-label="Ir a perfil">
         <i class="ph ph-user"></i>
         <span>Perfil</span>
       </button>
     </nav>
 
     <script>
-      /* ========= Helpers (localStorage) ========= */
+      // ===== Utilities =====
       function getTasks() {
         try {
           return JSON.parse(localStorage.getItem("tasks") || "[]");
@@ -249,8 +190,11 @@
       function saveTasks(tasks) {
         localStorage.setItem("tasks", JSON.stringify(tasks));
       }
+      function uid() {
+        return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      }
 
-      /* ========= Element references ========= */
+      // ===== Elements =====
       const homeSection = document.getElementById("home-section");
       const tasksSection = document.getElementById("tasks-section");
       const profileSection = document.getElementById("profile-section");
@@ -258,6 +202,15 @@
       const navHome = document.getElementById("nav-home");
       const navTasks = document.getElementById("nav-tasks");
       const navProfile = document.getElementById("nav-profile");
+
+      const currentDateEl = document.getElementById("current-date");
+      const progressNumberEl = document.getElementById("progress-number");
+
+      const goalInput = document.getElementById("daily-goal-input");
+      const saveGoalBtn = document.getElementById("save-goal");
+      const goalDisplay = document.getElementById("goal-display");
+
+      const streakDisplay = document.getElementById("streak-count");
 
       const taskList = document.getElementById("task-list");
       const addTaskForm = document.getElementById("add-task-form");
@@ -272,50 +225,40 @@
       const pendingTasksEl = document.getElementById("pending-tasks");
       const statCompletedEl = document.getElementById("stat-completed");
       const statPendingEl = document.getElementById("stat-pending");
-
-      const goalInput = document.getElementById("daily-goal-input");
-      const goalDisplay = document.getElementById("goal-display");
-      const saveGoalBtn = document.getElementById("save-goal");
-      const progressNumberEl = document.getElementById("progress-number");
-
-      const streakDisplay = document.getElementById("streak-count");
-      const themeBtn = document.getElementById("toggle-theme");
       const achievementsList = document.getElementById("achievements-list");
+      const themeBtn = document.getElementById("toggle-theme");
 
-      /* ========= Navigation ========= */
+      // ===== Navigation =====
       function activateButton(btn) {
         [navHome, navTasks, navProfile].forEach((b) =>
           b.classList.remove("active")
         );
-        if (btn) btn.classList.add("active");
+        btn.classList.add("active");
       }
 
-      function navigate(section) {
-        // hide all
+      function showSection(sectionEl) {
         [homeSection, tasksSection, profileSection].forEach((s) =>
           s.classList.remove("active")
         );
-
-        if (section === "home") {
-          homeSection.classList.add("active");
-          activateButton(navHome);
-        } else if (section === "tasks") {
-          tasksSection.classList.add("active");
-          activateButton(navTasks);
-          renderTasks(); // refresh tasks view
-        } else if (section === "profile") {
-          profileSection.classList.add("active");
-          activateButton(navProfile);
-          renderProfileStats();
-        }
+        sectionEl.classList.add("active");
       }
 
-      navHome.addEventListener("click", () => navigate("home"));
-      navTasks.addEventListener("click", () => navigate("tasks"));
-      navProfile.addEventListener("click", () => navigate("profile"));
+      navHome.addEventListener("click", () => {
+        showSection(homeSection);
+        activateButton(navHome);
+      });
+      navTasks.addEventListener("click", () => {
+        showSection(tasksSection);
+        activateButton(navTasks);
+        renderTasks();
+      });
+      navProfile.addEventListener("click", () => {
+        showSection(profileSection);
+        activateButton(navProfile);
+        renderProfileStats();
+      });
 
-      /* ========= Date in header ========= */
-      const currentDateEl = document.getElementById("current-date");
+      // ===== Initial UI values =====
       if (currentDateEl) {
         currentDateEl.textContent = new Date().toLocaleDateString("es-ES", {
           weekday: "long",
@@ -324,37 +267,44 @@
         });
       }
 
-      /* ========= Daily goal ========= */
+      // ===== Daily goal =====
       function loadGoal() {
-        const savedGoal = localStorage.getItem("dailyGoal");
-        if (savedGoal) {
-          goalDisplay.textContent = `Meta: ${savedGoal} tareas`;
-          goalInput.value = savedGoal;
+        const saved = localStorage.getItem("dailyGoal");
+        if (saved) {
+          goalInput.value = saved;
+          goalDisplay.textContent = `Meta: ${saved} tareas`;
         } else {
-          goalDisplay.textContent = `Meta: 0 tareas`;
+          goalDisplay.textContent = "Meta: 0 tareas";
         }
       }
       saveGoalBtn.addEventListener("click", () => {
-        const goal = Number(goalInput.value) || 0;
-        localStorage.setItem("dailyGoal", String(goal));
-        goalDisplay.textContent = `Meta: ${goal} tareas`;
+        const g = Number(goalInput.value) || 0;
+        localStorage.setItem("dailyGoal", g);
+        goalDisplay.textContent = `Meta: ${g} tareas`;
         updateProgress();
+        showToast("Objetivo guardado");
       });
       loadGoal();
 
-      /* ========= Streak (simple) ========= */
-      // Se deja simple: se guarda la racha en localStorage. Actualizar racha al marcar tareas completadas
+      // ===== Streak (simple) =====
       function loadStreak() {
         const s = Number(localStorage.getItem("streak") || 0);
         streakDisplay.textContent = s;
       }
-      function setStreak(val) {
-        localStorage.setItem("streak", String(val));
-        streakDisplay.textContent = val;
-      }
       loadStreak();
 
-      /* ========= Tasks rendering + actions ========= */
+      // ===== Tasks: create / render / actions =====
+      function createTaskObject({ text, category, deadline }) {
+        return {
+          _id: uid(),
+          text,
+          category: category || "General",
+          deadline: deadline || "",
+          completed: false,
+          createdAt: new Date().toISOString(),
+        };
+      }
+
       function renderTasks() {
         const tasks = getTasks();
         taskList.innerHTML = "";
@@ -363,10 +313,8 @@
         const categoryFilter = filterCategory ? filterCategory.value : "all";
 
         const filtered = tasks.filter((t) => {
-          if (filter !== "all") {
-            if (filter === "completed" && !t.completed) return false;
-            if (filter === "pending" && t.completed) return false;
-          }
+          if (filter === "completed" && !t.completed) return false;
+          if (filter === "pending" && t.completed) return false;
           if (categoryFilter !== "all" && t.category !== categoryFilter)
             return false;
           return true;
@@ -374,57 +322,92 @@
 
         if (!filtered.length) {
           const li = document.createElement("li");
+          li.className = "empty";
           li.textContent = "No hay tareas aún. ¡Agregá tu primera!";
-          li.style.textAlign = "center";
-          li.style.color = "#bbb";
-          li.style.padding = "1.2em 0";
-          li.style.fontWeight = "500";
           taskList.appendChild(li);
         } else {
-          filtered.forEach((task, i) => {
+          filtered.forEach((task) => {
             const li = document.createElement("li");
-            li.className = task.completed ? "completed" : "";
+            li.className = "task-item" + (task.completed ? " completed" : "");
 
             // checkbox
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = !!task.completed;
-            checkbox.setAttribute("aria-label", "Marcar completada");
-            // Need real index in full tasks array for toggle/delete
-            const fullIndex = getTasks().findIndex((t) => t._id === task._id);
-            checkbox.addEventListener("change", () => toggleTask(fullIndex));
+            const cb = document.createElement("input");
+            cb.type = "checkbox";
+            cb.className = "task-checkbox";
+            cb.checked = !!task.completed;
+            cb.setAttribute("aria-label", "Marcar completada");
+            cb.addEventListener("change", () => toggleTaskById(task._id));
 
-            // title + meta
-            const span = document.createElement("span");
-            span.innerHTML = `<strong>${escapeHtml(
-              task.text || task.title || ""
-            )}</strong> <em>[${escapeHtml(task.category || "General")}]</em>`;
+            // body (title + meta)
+            const body = document.createElement("div");
+            body.className = "task-body";
+
+            const title = document.createElement("div");
+            title.className = "task-title";
+            title.textContent = task.text;
+
+            // category badge
+            const cat = document.createElement("span");
+            cat.className = "task-category-badge";
+            cat.textContent = task.category;
+            title.appendChild(cat);
+
+            // meta row
+            const meta = document.createElement("div");
+            meta.className = "task-meta";
             if (task.deadline) {
-              const small = document.createElement("small");
-              small.style.marginLeft = "8px";
-              small.textContent = `⏰ ${task.deadline}`;
-              span.appendChild(small);
+              const dl = document.createElement("span");
+              dl.className = "task-deadline";
+              dl.textContent = `⏰ ${task.deadline}`;
+              meta.appendChild(dl);
+            } else {
+              const info = document.createElement("span");
+              info.textContent = ""; // placeholder if needed
+              meta.appendChild(info);
             }
+
+            body.appendChild(title);
+            body.appendChild(meta);
 
             // actions
             const actions = document.createElement("div");
             actions.className = "task-actions";
+
+            const completeBtn = document.createElement("button");
+            completeBtn.className = "action-btn complete";
+            completeBtn.title = task.completed
+              ? "Marcar como pendiente"
+              : "Marcar como completada";
+            completeBtn.innerHTML = `<i class="ph ph-check"></i>`;
+            completeBtn.addEventListener("click", () =>
+              toggleTaskById(task._id)
+            );
+
+            const editBtn = document.createElement("button");
+            editBtn.className = "action-btn edit";
+            editBtn.title = "Editar";
+            editBtn.innerHTML = `<i class="ph ph-pencil"></i>`;
+            editBtn.addEventListener("click", () => editTaskById(task._id));
+
             const delBtn = document.createElement("button");
             delBtn.className = "action-btn delete";
             delBtn.title = "Eliminar";
             delBtn.innerHTML = `<i class="ph ph-trash"></i>`;
-            delBtn.addEventListener("click", () => deleteTask(fullIndex));
+            delBtn.addEventListener("click", () => deleteTaskById(task._id));
 
+            actions.appendChild(completeBtn);
+            actions.appendChild(editBtn);
             actions.appendChild(delBtn);
 
-            li.appendChild(checkbox);
-            li.appendChild(span);
+            li.appendChild(cb);
+            li.appendChild(body);
             li.appendChild(actions);
+
             taskList.appendChild(li);
           });
         }
 
-        // Update metrics
+        // update metrics
         const total = tasks.length;
         const completed = tasks.filter((t) => t.completed).length;
         const pending = total - completed;
@@ -439,38 +422,52 @@
         updateAchievements();
       }
 
-      // Create unique id for tasks so we can find them after filtering
-      function createTaskObject({ text, category, deadline }) {
-        return {
-          _id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
-          text,
-          title: text,
-          category: category || "General",
-          deadline: deadline || "",
-          completed: false,
-        };
-      }
-
-      function toggleTask(index) {
+      function toggleTaskById(id) {
         const tasks = getTasks();
-        if (index < 0 || index >= tasks.length) return;
-        tasks[index].completed = !tasks[index].completed;
+        const idx = tasks.findIndex((t) => t._id === id);
+        if (idx === -1) return;
+        tasks[idx].completed = !tasks[idx].completed;
         saveTasks(tasks);
-        // optionally update streak: if user completed a task and it's the first completed for today increment streak
-        // (simple approach: if any completed today and we haven't incremented today -> increment)
+        // simple streak update: increment if marking completed (can be improved with date logic)
+        if (tasks[idx].completed) {
+          const lastMarked = localStorage.getItem("lastMarkedDay");
+          const today = new Date().toISOString().slice(0, 10);
+          if (lastMarked !== today) {
+            // increment streak
+            const currentStreak = Number(localStorage.getItem("streak") || 0);
+            localStorage.setItem("streak", String(currentStreak + 1));
+            localStorage.setItem("lastMarkedDay", today);
+            loadStreak();
+          }
+        }
         renderTasks();
       }
 
-      function deleteTask(index) {
+      function deleteTaskById(id) {
         if (!confirm("¿Eliminar esta tarea?")) return;
         const tasks = getTasks();
-        if (index < 0 || index >= tasks.length) return;
-        tasks.splice(index, 1);
+        const idx = tasks.findIndex((t) => t._id === id);
+        if (idx === -1) return;
+        tasks.splice(idx, 1);
         saveTasks(tasks);
         renderTasks();
+        showToast("Tarea eliminada");
       }
 
-      /* Add task form */
+      function editTaskById(id) {
+        const tasks = getTasks();
+        const idx = tasks.findIndex((t) => t._id === id);
+        if (idx === -1) return;
+        const t = tasks[idx];
+        const newText = prompt("Editar tarea", t.text);
+        if (newText === null) return;
+        t.text = newText.trim() || t.text;
+        saveTasks(tasks);
+        renderTasks();
+        showToast("Tarea actualizada");
+      }
+
+      // add-task form
       if (addTaskForm) {
         addTaskForm.addEventListener("submit", (e) => {
           e.preventDefault();
@@ -484,15 +481,15 @@
           newTaskInput.value = "";
           if (newTaskDeadline) newTaskDeadline.value = "";
           renderTasks();
+          showToast("Tarea creada");
         });
       }
 
-      /* Filters */
       if (filterTasks) filterTasks.addEventListener("change", renderTasks);
       if (filterCategory)
         filterCategory.addEventListener("change", renderTasks);
 
-      /* ========= Progress and Achievements ========= */
+      // ===== Progress & Achievements =====
       function updateProgress() {
         const tasks = getTasks();
         const completed = tasks.filter((t) => t.completed).length;
@@ -522,11 +519,10 @@
         if (completed >= 25)
           achievementsList.innerHTML += "<li>⭐ 25 tareas completadas</li>";
         if (completed < 10)
-          achievementsList.innerHTML +=
-            "<li>¡Sigue así! Completadas: " + completed + "</li>";
+          achievementsList.innerHTML += `<li>¡Sigue así! Completadas: ${completed}</li>`;
       }
 
-      /* ========= Profile stats (renders when opening profile) ========= */
+      // ===== Profile stats =====
       function renderProfileStats() {
         const tasks = getTasks();
         const completed = tasks.filter((t) => t.completed).length;
@@ -536,7 +532,7 @@
         updateAchievements();
       }
 
-      /* ========= Theme toggle ========= */
+      // ===== Theme toggle =====
       let darkMode = localStorage.getItem("darkMode") === "true";
       function applyTheme() {
         document.body.classList.toggle("dark", darkMode);
@@ -544,6 +540,7 @@
           themeBtn.textContent = darkMode
             ? "Cambiar a modo claro ☀️"
             : "Cambiar a modo oscuro 🌙";
+          themeBtn.setAttribute("aria-pressed", darkMode ? "true" : "false");
         }
       }
       if (themeBtn) {
@@ -555,27 +552,31 @@
       }
       applyTheme();
 
-      /* ========= Utilities ========= */
-      function escapeHtml(str) {
-        return String(str)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+      // ===== Toast helper =====
+      let toastTimer = null;
+      function showToast(text, ms = 1700) {
+        let toast = document.querySelector(".toast");
+        if (!toast) {
+          toast = document.createElement("div");
+          toast.className = "toast";
+          document.body.appendChild(toast);
+        }
+        toast.textContent = text;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, ms);
       }
 
-      /* ========= Init on load ========= */
+      // ===== Init =====
       document.addEventListener("DOMContentLoaded", () => {
-        // If no tasks stored, ensure structure is array
-        if (!localStorage.getItem("tasks")) localStorage.setItem("tasks", "[]");
-        // Ensure existing tasks have unique _id (for robust indexing)
+        // ensure tasks array exists and give all tasks ids if missing (robustness)
         const tasks = getTasks();
         let changed = false;
         for (let t of tasks) {
           if (!t._id) {
-            t._id =
-              Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+            t._id = uid();
             changed = true;
           }
         }
@@ -584,8 +585,6 @@
         loadGoal();
         loadStreak();
         renderTasks();
-        // Show home by default
-        navigate("home");
       });
     </script>
   </body>
