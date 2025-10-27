@@ -131,7 +131,7 @@
       </section>
 
       <!-- ===== PROFILE ===== -->
-      <section class="screen" id="profile-section">
+      <section class="screen" id="profile-section" aria-label="Sección perfil">
         <div class="profile-card">
           <div class="profile-avatar"><i class="ph ph-user"></i></div>
           <div class="profile-info">
@@ -241,6 +241,9 @@
           s.classList.remove("active")
         );
         sectionEl.classList.add("active");
+
+        // ensure page is scrolled to top when switching to a section
+        window.scrollTo({ top: 0, behavior: "auto" });
       }
 
       navHome.addEventListener("click", () => {
