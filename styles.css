@@ -1,6 +1,8 @@
 /* ============================================================
-   Taskify - Corrección overflow icons y espaciado perfil
-   (reemplaza tu styles.css con este archivo)
+   Taskify - styles.css (fixed: profile overlapping other screens)
+   Mobile-first, exhaustive component styles, dark mode
+   NOTE: This file ensures .screen hiding works correctly by
+   not overriding .screen display with ID selectors.
    ============================================================ */
 
 :root {
@@ -92,12 +94,21 @@ p {
   font-size: 0.95rem;
 }
 
-/* screen visibility */
+/* SCREEN VISIBILITY
+   Use class .screen and .screen.active.
+   Important: don't set display directly on #profile-section (ID)
+   anywhere else — that previously overrode .screen rules.
+*/
 .screen {
   display: none;
+  position: relative;
+  z-index: 0;
 }
 .screen.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  z-index: 1;
 }
 
 /* navbar */
@@ -119,7 +130,7 @@ p {
   );
   border-top: 1px solid rgba(0, 0, 0, 0.04);
   backdrop-filter: blur(6px);
-  z-index: 120;
+  z-index: 300;
 }
 .nav-btn {
   display: inline-flex;
@@ -365,6 +376,7 @@ p {
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 /* input focus */
@@ -378,6 +390,7 @@ textarea:focus {
 }
 
 /* task list / items */
+/* Important: min-width: 0 on flex children prevents them from forcing parent width */
 .task-list {
   list-style: none;
   padding: 0;
@@ -395,7 +408,7 @@ textarea:focus {
   margin-bottom: 0.7rem;
   transition: transform var(--transition-fast),
     box-shadow var(--transition-fast), background var(--transition-fast);
-  min-width: 0; /* allows children to shrink instead of forcing overflow */
+  min-width: 0; /* critical to prevent overflow */
 }
 .task-item:hover {
   transform: translateY(-3px);
@@ -414,7 +427,7 @@ textarea:focus {
   cursor: pointer;
 }
 
-/* IMPORTANT: allow body to shrink, prevent overflow from actions */
+/* task body must be allowed to shrink and show ellipsis */
 .task-body {
   display: flex;
   flex-direction: column;
@@ -473,7 +486,7 @@ textarea:focus {
   border-radius: 8px;
   cursor: pointer;
   color: var(--muted);
-  min-width: 40px; /* smaller than earlier var(--touch) so actions don't force overflow */
+  min-width: 40px; /* smaller so icons don't force overflow */
   min-height: 40px;
   display: inline-flex;
   align-items: center;
@@ -524,15 +537,8 @@ textarea:focus {
   font-weight: 600;
 }
 
-/* PROFILE: more breathing room and spacing (user reported tightness) */
-#profile-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem; /* increase gap between blocks */
-  padding-bottom: 0.6rem;
-}
-
-/* Profile card adjustments */
+/* PROFILE: spacing fixes (do NOT set display on the ID to avoid overriding .screen) */
+/* Use padding/gap and rely on .screen.active to set display:flex for visible screens. */
 .profile-card {
   display: flex;
   gap: 1.15rem;
@@ -598,7 +604,7 @@ textarea:focus {
   font-weight: 600;
 }
 
-/* theme toggle layout */
+/* theme toggle / achievements / streak */
 .theme-toggle {
   margin-top: 0.2rem;
   display: flex;
@@ -612,8 +618,6 @@ textarea:focus {
   padding: 0.7rem 0.95rem;
   font-size: 0.98rem;
 }
-
-/* achievements spacing */
 .achievements {
   margin-top: 0.6rem;
   padding: 1.15rem;
@@ -638,8 +642,6 @@ textarea:focus {
 .achievements li:last-child {
   border-bottom: none;
 }
-
-/* streak */
 .streak-section {
   margin-top: 0.9rem;
   padding: 1.15rem;
@@ -733,6 +735,12 @@ body.dark .nav-btn.active {
 body.dark .task-item:hover {
   box-shadow: 0 10px 30px rgba(255, 255, 255, 0.02);
 }
+body.dark .profile-card,
+body.dark .profile-details,
+body.dark .achievements,
+body.dark .streak-section {
+  border-color: rgba(255, 255, 255, 0.03);
+}
 
 /* responsive tweaks */
 @media (max-width: 420px) {
@@ -772,3 +780,7 @@ body.dark .task-item:hover {
     margin-top: 1rem;
   }
 }
+
+/* ============================================================
+   End of styles.css
+   ============================================================ */
