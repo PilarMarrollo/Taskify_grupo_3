@@ -3,80 +3,170 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taskify - Lista de tareas</title>
-    <!-- Poppins Font -->
+    <title>Taskify Dashboard</title>
     <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
     />
-    <!-- Phosphor Icons -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"
     />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Pequeños estilos de apoyo para que se vea OK sin el CSS completo */
+      body {
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        margin: 0;
+        padding: 0;
+      }
+      .navbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        display: flex;
+        background: #fff;
+        border-top: 1px solid #e6e6e6;
+      }
+      .nav-btn {
+        flex: 1;
+        border: 0;
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        font-size: 12px;
+      }
+      .nav-btn.active {
+        background: #f3f7ff;
+      }
+      .main-container {
+        padding: 1rem;
+        padding-bottom: 80px;
+      }
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+      }
+      .task-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0;
+      }
+      .task-list li {
+        padding: 0.6rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .task-list li.completed {
+        opacity: 0.7;
+        text-decoration: line-through;
+      }
+      .task-actions {
+        margin-left: auto;
+      }
+      button {
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <main class="main-container">
-      <!-- WELCOME / ONBOARDING SCREEN -->
-      <section
-        class="welcome-screen"
-        id="welcome-screen"
-        aria-modal="true"
-        role="dialog"
-      >
-        <div class="welcome-card card">
-          <div class="welcome-illustration" aria-hidden="true">
-            <i class="ph ph-sparkle"></i>
-          </div>
-          <h1 class="welcome-title">Bienvenido a Taskify</h1>
-          <p class="welcome-sub">
-            Empezá a sumar tareas, organizá tu día y completá tus objetivos.
-          </p>
-          <div class="welcome-actions">
-            <button
-              id="start-btn"
-              class="btn-primary"
-              aria-label="Empezar a sumar tareas"
-            >
-              Empezar a sumar tareas
-            </button>
-            <button id="skip-btn" class="btn-ghost" aria-label="Ir a la app">
-              Ir a la app
-            </button>
-          </div>
-          <button
-            id="close-welcome"
-            class="welcome-close"
-            aria-label="Cerrar bienvenida"
-            title="Cerrar"
-          >
-            ✕
-          </button>
-        </div>
-      </section>
-
-      <!-- HOME: Header tipo "Hello, Grupo 3" -->
-      <section class="top-section" id="home-section">
-        <div class="top-header">
+      <!-- ===== HOME / DASHBOARD ===== -->
+      <section class="screen" id="home-section">
+        <header class="top-header">
           <div>
-            <div class="user-greeting">¡Hola, Grupo 3!</div>
-            <div class="today-date" id="today-date"></div>
+            <h1 class="main-title">Tu progreso de hoy</h1>
+            <p class="subtitle" id="current-date"></p>
           </div>
-          <div class="user-avatar"><i class="ph ph-user"></i></div>
-        </div>
-        <div class="card highlight-card">
-          <div class="highlight-title">Tu desafío de hoy</div>
-          <div class="highlight-desc">
-            ¡Agrega y completa al menos 3 tareas!
+          <div class="progress-circle">
+            <div class="progress-number" id="progress-number">0%</div>
           </div>
-        </div>
+        </header>
+
+        <!-- OBJETIVO DIARIO -->
+        <section class="daily-goal">
+          <h3>Objetivo diario</h3>
+          <input
+            type="number"
+            id="daily-goal-input"
+            placeholder="Ej: 5 tareas"
+            min="1"
+          />
+          <button id="save-goal">Guardar</button>
+          <p id="goal-display">Meta: 0 tareas</p>
+        </section>
+
+        <!-- RACHA DE PRODUCTIVIDAD -->
+        <section class="streak-section">
+          <h3>🔥 Racha de productividad</h3>
+          <p>
+            Días consecutivos completando tareas:
+            <span id="streak-count">0</span>
+          </p>
+        </section>
+
+        <section class="metrics">
+          <div class="metric-card">
+            <h3>Tareas totales</h3>
+            <p id="total-tasks">0</p>
+          </div>
+          <div class="metric-card">
+            <h3>Completadas</h3>
+            <p id="completed-tasks">0</p>
+          </div>
+          <div class="metric-card">
+            <h3>Pendientes</h3>
+            <p id="pending-tasks">0</p>
+          </div>
+        </section>
+
+        <section class="weekly-summary">
+          <h2>Resumen semanal</h2>
+          <div class="chart-bars">
+            <div class="bar" style="--value: 70%" data-day="Lun"></div>
+            <div class="bar" style="--value: 50%" data-day="Mar"></div>
+            <div class="bar" style="--value: 90%" data-day="Mié"></div>
+            <div class="bar" style="--value: 40%" data-day="Jue"></div>
+            <div class="bar" style="--value: 80%" data-day="Vie"></div>
+          </div>
+        </section>
       </section>
 
-      <!-- TASKS: Lista de tareas -->
-      <section class="task-section" id="tasks-section" style="display: none">
-        <h2 class="section-title">Tus tareas</h2>
+      <!-- ===== TASKS ===== -->
+      <section class="screen" id="tasks-section">
+        <div class="task-header">
+          <h2>Mis tareas</h2>
+          <select id="filter-tasks">
+            <option value="all">Todas</option>
+            <option value="pending">Pendientes</option>
+            <option value="completed">Completadas</option>
+          </select>
+        </div>
+
+        <!-- FILTRO POR CATEGORÍA -->
+        <div class="task-filter-category">
+          <label for="filter-category">Categoría:</label>
+          <select id="filter-category">
+            <option value="all">Todas</option>
+            <option value="Trabajo">Trabajo</option>
+            <option value="Estudio">Estudio</option>
+            <option value="Personal">Personal</option>
+          </select>
+        </div>
+
         <ul id="task-list" class="task-list"></ul>
+
+        <!-- FECHA LÍMITE -->
         <form id="add-task-form" class="add-task-form">
           <input
             type="text"
@@ -86,59 +176,417 @@
             autocomplete="off"
             required
           />
+          <select id="new-task-category">
+            <option value="General">General</option>
+            <option value="Trabajo">Trabajo</option>
+            <option value="Estudio">Estudio</option>
+            <option value="Personal">Personal</option>
+          </select>
+          <input type="date" id="new-task-deadline" />
           <button type="submit" aria-label="Agregar tarea">
-            <i class="ph ph-plus"></i>
+            <i class="ph ph-plus"></i> Agregar
           </button>
         </form>
       </section>
 
-      <!-- PROFILE: Perfil de usuario -->
-      <section
-        class="profile-section"
-        id="profile-section"
-        style="display: none"
-      >
-        <div class="profile-card card">
+      <!-- ===== PROFILE ===== -->
+      <section class="screen" id="profile-section">
+        <div class="profile-card">
           <div class="profile-avatar"><i class="ph ph-user"></i></div>
           <div class="profile-info">
-            <div class="profile-hello">Hola, Grupo 3</div>
-            <div class="profile-name">Grupo 3</div>
-            <div class="profile-email">grupo3@email.com</div>
+            <h3>Grupo 3</h3>
+            <p>grupo3@email.com</p>
           </div>
+        </div>
+
+        <div class="profile-details">
+          <h4>Estadísticas personales</h4>
+          <p>Tareas completadas: <span id="stat-completed">0</span></p>
+          <p>Tareas en curso: <span id="stat-pending">0</span></p>
+        </div>
+
+        <!-- CAMBIO DE TEMA -->
+        <div class="theme-toggle">
+          <h4>Tema visual</h4>
+          <button id="toggle-theme">Cambiar a modo oscuro 🌙</button>
+        </div>
+
+        <!-- LOGROS -->
+        <div class="achievements">
+          <h4>🏅 Logros</h4>
+          <ul id="achievements-list">
+            <li>No hay logros aún.</li>
+          </ul>
         </div>
       </section>
     </main>
 
-    <!-- FAB flotante para cargar tareas rápido -->
-    <button
-      id="add-task-btn"
-      class="fab"
-      aria-label="Agregar tarea"
-      style="display: none"
-    >
-      <i class="ph ph-plus"></i>
-    </button>
-
-    <!-- Bottom nav estilo mobile completo -->
+    <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
-      <button
-        class="nav-btn active"
-        id="nav-home"
-        aria-label="Inicio"
-        tabindex="0"
-      >
+      <button class="nav-btn active" id="nav-home">
         <i class="ph ph-house"></i>
         <span>Inicio</span>
       </button>
-      <button class="nav-btn" id="nav-tasks" aria-label="Tareas" tabindex="0">
+      <button class="nav-btn" id="nav-tasks">
         <i class="ph ph-list-checks"></i>
         <span>Tareas</span>
       </button>
-      <button class="nav-btn" id="nav-profile" aria-label="Perfil" tabindex="0">
+      <button class="nav-btn" id="nav-profile">
         <i class="ph ph-user"></i>
         <span>Perfil</span>
       </button>
     </nav>
-    <script src="script.js"></script>
+
+    <script>
+      /* ========= Helpers (localStorage) ========= */
+      function getTasks() {
+        try {
+          return JSON.parse(localStorage.getItem("tasks") || "[]");
+        } catch {
+          return [];
+        }
+      }
+      function saveTasks(tasks) {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      /* ========= Element references ========= */
+      const homeSection = document.getElementById("home-section");
+      const tasksSection = document.getElementById("tasks-section");
+      const profileSection = document.getElementById("profile-section");
+
+      const navHome = document.getElementById("nav-home");
+      const navTasks = document.getElementById("nav-tasks");
+      const navProfile = document.getElementById("nav-profile");
+
+      const taskList = document.getElementById("task-list");
+      const addTaskForm = document.getElementById("add-task-form");
+      const newTaskInput = document.getElementById("new-task-input");
+      const newTaskCategory = document.getElementById("new-task-category");
+      const newTaskDeadline = document.getElementById("new-task-deadline");
+      const filterTasks = document.getElementById("filter-tasks");
+      const filterCategory = document.getElementById("filter-category");
+
+      const totalTasksEl = document.getElementById("total-tasks");
+      const completedTasksEl = document.getElementById("completed-tasks");
+      const pendingTasksEl = document.getElementById("pending-tasks");
+      const statCompletedEl = document.getElementById("stat-completed");
+      const statPendingEl = document.getElementById("stat-pending");
+
+      const goalInput = document.getElementById("daily-goal-input");
+      const goalDisplay = document.getElementById("goal-display");
+      const saveGoalBtn = document.getElementById("save-goal");
+      const progressNumberEl = document.getElementById("progress-number");
+
+      const streakDisplay = document.getElementById("streak-count");
+      const themeBtn = document.getElementById("toggle-theme");
+      const achievementsList = document.getElementById("achievements-list");
+
+      /* ========= Navigation ========= */
+      function activateButton(btn) {
+        [navHome, navTasks, navProfile].forEach((b) =>
+          b.classList.remove("active")
+        );
+        if (btn) btn.classList.add("active");
+      }
+
+      function navigate(section) {
+        // hide all
+        [homeSection, tasksSection, profileSection].forEach((s) =>
+          s.classList.remove("active")
+        );
+
+        if (section === "home") {
+          homeSection.classList.add("active");
+          activateButton(navHome);
+        } else if (section === "tasks") {
+          tasksSection.classList.add("active");
+          activateButton(navTasks);
+          renderTasks(); // refresh tasks view
+        } else if (section === "profile") {
+          profileSection.classList.add("active");
+          activateButton(navProfile);
+          renderProfileStats();
+        }
+      }
+
+      navHome.addEventListener("click", () => navigate("home"));
+      navTasks.addEventListener("click", () => navigate("tasks"));
+      navProfile.addEventListener("click", () => navigate("profile"));
+
+      /* ========= Date in header ========= */
+      const currentDateEl = document.getElementById("current-date");
+      if (currentDateEl) {
+        currentDateEl.textContent = new Date().toLocaleDateString("es-ES", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        });
+      }
+
+      /* ========= Daily goal ========= */
+      function loadGoal() {
+        const savedGoal = localStorage.getItem("dailyGoal");
+        if (savedGoal) {
+          goalDisplay.textContent = `Meta: ${savedGoal} tareas`;
+          goalInput.value = savedGoal;
+        } else {
+          goalDisplay.textContent = `Meta: 0 tareas`;
+        }
+      }
+      saveGoalBtn.addEventListener("click", () => {
+        const goal = Number(goalInput.value) || 0;
+        localStorage.setItem("dailyGoal", String(goal));
+        goalDisplay.textContent = `Meta: ${goal} tareas`;
+        updateProgress();
+      });
+      loadGoal();
+
+      /* ========= Streak (simple) ========= */
+      // Se deja simple: se guarda la racha en localStorage. Actualizar racha al marcar tareas completadas
+      function loadStreak() {
+        const s = Number(localStorage.getItem("streak") || 0);
+        streakDisplay.textContent = s;
+      }
+      function setStreak(val) {
+        localStorage.setItem("streak", String(val));
+        streakDisplay.textContent = val;
+      }
+      loadStreak();
+
+      /* ========= Tasks rendering + actions ========= */
+      function renderTasks() {
+        const tasks = getTasks();
+        taskList.innerHTML = "";
+
+        const filter = filterTasks ? filterTasks.value : "all";
+        const categoryFilter = filterCategory ? filterCategory.value : "all";
+
+        const filtered = tasks.filter((t) => {
+          if (filter !== "all") {
+            if (filter === "completed" && !t.completed) return false;
+            if (filter === "pending" && t.completed) return false;
+          }
+          if (categoryFilter !== "all" && t.category !== categoryFilter)
+            return false;
+          return true;
+        });
+
+        if (!filtered.length) {
+          const li = document.createElement("li");
+          li.textContent = "No hay tareas aún. ¡Agregá tu primera!";
+          li.style.textAlign = "center";
+          li.style.color = "#bbb";
+          li.style.padding = "1.2em 0";
+          li.style.fontWeight = "500";
+          taskList.appendChild(li);
+        } else {
+          filtered.forEach((task, i) => {
+            const li = document.createElement("li");
+            li.className = task.completed ? "completed" : "";
+
+            // checkbox
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = !!task.completed;
+            checkbox.setAttribute("aria-label", "Marcar completada");
+            // Need real index in full tasks array for toggle/delete
+            const fullIndex = getTasks().findIndex((t) => t._id === task._id);
+            checkbox.addEventListener("change", () => toggleTask(fullIndex));
+
+            // title + meta
+            const span = document.createElement("span");
+            span.innerHTML = `<strong>${escapeHtml(
+              task.text || task.title || ""
+            )}</strong> <em>[${escapeHtml(task.category || "General")}]</em>`;
+            if (task.deadline) {
+              const small = document.createElement("small");
+              small.style.marginLeft = "8px";
+              small.textContent = `⏰ ${task.deadline}`;
+              span.appendChild(small);
+            }
+
+            // actions
+            const actions = document.createElement("div");
+            actions.className = "task-actions";
+            const delBtn = document.createElement("button");
+            delBtn.className = "action-btn delete";
+            delBtn.title = "Eliminar";
+            delBtn.innerHTML = `<i class="ph ph-trash"></i>`;
+            delBtn.addEventListener("click", () => deleteTask(fullIndex));
+
+            actions.appendChild(delBtn);
+
+            li.appendChild(checkbox);
+            li.appendChild(span);
+            li.appendChild(actions);
+            taskList.appendChild(li);
+          });
+        }
+
+        // Update metrics
+        const total = tasks.length;
+        const completed = tasks.filter((t) => t.completed).length;
+        const pending = total - completed;
+
+        if (totalTasksEl) totalTasksEl.textContent = total;
+        if (completedTasksEl) completedTasksEl.textContent = completed;
+        if (pendingTasksEl) pendingTasksEl.textContent = pending;
+        if (statCompletedEl) statCompletedEl.textContent = completed;
+        if (statPendingEl) statPendingEl.textContent = pending;
+
+        updateProgress();
+        updateAchievements();
+      }
+
+      // Create unique id for tasks so we can find them after filtering
+      function createTaskObject({ text, category, deadline }) {
+        return {
+          _id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+          text,
+          title: text,
+          category: category || "General",
+          deadline: deadline || "",
+          completed: false,
+        };
+      }
+
+      function toggleTask(index) {
+        const tasks = getTasks();
+        if (index < 0 || index >= tasks.length) return;
+        tasks[index].completed = !tasks[index].completed;
+        saveTasks(tasks);
+        // optionally update streak: if user completed a task and it's the first completed for today increment streak
+        // (simple approach: if any completed today and we haven't incremented today -> increment)
+        renderTasks();
+      }
+
+      function deleteTask(index) {
+        if (!confirm("¿Eliminar esta tarea?")) return;
+        const tasks = getTasks();
+        if (index < 0 || index >= tasks.length) return;
+        tasks.splice(index, 1);
+        saveTasks(tasks);
+        renderTasks();
+      }
+
+      /* Add task form */
+      if (addTaskForm) {
+        addTaskForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const text = newTaskInput.value.trim();
+          if (!text) return;
+          const category = newTaskCategory ? newTaskCategory.value : "General";
+          const deadline = newTaskDeadline ? newTaskDeadline.value : "";
+          const tasks = getTasks();
+          tasks.unshift(createTaskObject({ text, category, deadline }));
+          saveTasks(tasks);
+          newTaskInput.value = "";
+          if (newTaskDeadline) newTaskDeadline.value = "";
+          renderTasks();
+        });
+      }
+
+      /* Filters */
+      if (filterTasks) filterTasks.addEventListener("change", renderTasks);
+      if (filterCategory)
+        filterCategory.addEventListener("change", renderTasks);
+
+      /* ========= Progress and Achievements ========= */
+      function updateProgress() {
+        const tasks = getTasks();
+        const completed = tasks.filter((t) => t.completed).length;
+        const goal = Number(localStorage.getItem("dailyGoal") || 0);
+        let progress = 0;
+        if (goal > 0)
+          progress = Math.min(100, Math.round((completed / goal) * 100));
+        else
+          progress = Math.min(
+            100,
+            Math.round((completed / Math.max(1, tasks.length)) * 100)
+          );
+        if (progressNumberEl) progressNumberEl.textContent = `${progress}%`;
+      }
+
+      function updateAchievements() {
+        const tasks = getTasks();
+        const completed = tasks.filter((t) => t.completed).length;
+        achievementsList.innerHTML = "";
+
+        if (completed === 0) {
+          achievementsList.innerHTML = "<li>Empieza tu primera tarea 💪</li>";
+          return;
+        }
+        if (completed >= 10)
+          achievementsList.innerHTML += "<li>🏆 10 tareas completadas</li>";
+        if (completed >= 25)
+          achievementsList.innerHTML += "<li>⭐ 25 tareas completadas</li>";
+        if (completed < 10)
+          achievementsList.innerHTML +=
+            "<li>¡Sigue así! Completadas: " + completed + "</li>";
+      }
+
+      /* ========= Profile stats (renders when opening profile) ========= */
+      function renderProfileStats() {
+        const tasks = getTasks();
+        const completed = tasks.filter((t) => t.completed).length;
+        const pending = tasks.length - completed;
+        if (statCompletedEl) statCompletedEl.textContent = completed;
+        if (statPendingEl) statPendingEl.textContent = pending;
+        updateAchievements();
+      }
+
+      /* ========= Theme toggle ========= */
+      let darkMode = localStorage.getItem("darkMode") === "true";
+      function applyTheme() {
+        document.body.classList.toggle("dark", darkMode);
+        if (themeBtn) {
+          themeBtn.textContent = darkMode
+            ? "Cambiar a modo claro ☀️"
+            : "Cambiar a modo oscuro 🌙";
+        }
+      }
+      if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+          darkMode = !darkMode;
+          localStorage.setItem("darkMode", darkMode ? "true" : "false");
+          applyTheme();
+        });
+      }
+      applyTheme();
+
+      /* ========= Utilities ========= */
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      /* ========= Init on load ========= */
+      document.addEventListener("DOMContentLoaded", () => {
+        // If no tasks stored, ensure structure is array
+        if (!localStorage.getItem("tasks")) localStorage.setItem("tasks", "[]");
+        // Ensure existing tasks have unique _id (for robust indexing)
+        const tasks = getTasks();
+        let changed = false;
+        for (let t of tasks) {
+          if (!t._id) {
+            t._id =
+              Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+            changed = true;
+          }
+        }
+        if (changed) saveTasks(tasks);
+
+        loadGoal();
+        loadStreak();
+        renderTasks();
+        // Show home by default
+        navigate("home");
+      });
+    </script>
   </body>
 </html>
