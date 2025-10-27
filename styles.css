@@ -1,6 +1,6 @@
 /* ============================================================
-   Taskify - Unified stylesheet (complete)
-   Mobile-first, exhaustive component styles, dark mode
+   Taskify - Corrección overflow icons y espaciado perfil
+   (reemplaza tu styles.css con este archivo)
    ============================================================ */
 
 :root {
@@ -18,7 +18,6 @@
   --glass-border: rgba(0, 0, 0, 0.06);
   --accent: var(--vanila);
   --accent-blue: var(--alice-blue);
-  --accent-green: var(--honeydew);
   --text: var(--eerie-black);
   --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
@@ -69,7 +68,7 @@ body {
   box-sizing: border-box;
 }
 
-/* headings */
+/* headings and text */
 h1,
 h2,
 h3,
@@ -87,51 +86,10 @@ h1 {
 h2 {
   font-size: 1.4rem;
 }
-h3 {
-  font-size: 1rem;
-}
-
-/* text */
 p {
   margin: 0.25rem 0;
   color: var(--muted);
   font-size: 0.95rem;
-}
-small {
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-strong {
-  font-weight: 800;
-  color: var(--text);
-}
-em {
-  font-style: italic;
-  color: var(--muted);
-}
-
-/* links */
-a {
-  color: var(--accent-blue);
-  text-decoration: none;
-}
-a:hover,
-a:focus {
-  text-decoration: underline;
-}
-
-/* visually hidden */
-.visually-hidden {
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  clip: rect(1px, 1px, 1px, 1px);
-  clip-path: inset(50%);
-  overflow: hidden;
-  white-space: nowrap;
-  border: 0;
-  padding: 0;
-  margin: -1px;
 }
 
 /* screen visibility */
@@ -180,9 +138,6 @@ a:focus {
 .nav-btn i {
   font-size: 1.35rem;
 }
-.nav-btn span {
-  font-size: 0.78rem;
-}
 .nav-btn.active {
   color: var(--eerie-black);
   transform: translateY(-4px);
@@ -190,7 +145,7 @@ a:focus {
   background: rgba(255, 255, 255, 0.6);
 }
 
-/* header */
+/* header / progress */
 .top-header {
   display: flex;
   justify-content: space-between;
@@ -208,8 +163,6 @@ a:focus {
   font-size: 0.95rem;
   color: var(--muted);
 }
-
-/* progress circle */
 .progress-circle {
   width: 64px;
   height: 64px;
@@ -312,7 +265,7 @@ a:focus {
   margin: 0;
 }
 
-/* chart */
+/* weekly chart */
 .weekly-summary {
   margin-top: 0.8rem;
 }
@@ -341,7 +294,7 @@ a:focus {
   color: var(--muted);
 }
 
-/* task header */
+/* tasks header / filters / form */
 .task-header {
   display: flex;
   justify-content: space-between;
@@ -411,6 +364,7 @@ a:focus {
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  flex: 0 0 auto;
 }
 
 /* input focus */
@@ -423,7 +377,7 @@ textarea:focus {
   background: #ffffff;
 }
 
-/* task list & items */
+/* task list / items */
 .task-list {
   list-style: none;
   padding: 0;
@@ -441,6 +395,7 @@ textarea:focus {
   margin-bottom: 0.7rem;
   transition: transform var(--transition-fast),
     box-shadow var(--transition-fast), background var(--transition-fast);
+  min-width: 0; /* allows children to shrink instead of forcing overflow */
 }
 .task-item:hover {
   transform: translateY(-3px);
@@ -459,19 +414,24 @@ textarea:focus {
   cursor: pointer;
 }
 
-/* body/title/meta */
+/* IMPORTANT: allow body to shrink, prevent overflow from actions */
 .task-body {
   display: flex;
   flex-direction: column;
   gap: 0.12rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
 }
 .task-title {
   font-size: 0.98rem;
   font-weight: 700;
   color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* prevents long text from pushing icons */
+  max-width: 100%;
 }
 .task-meta {
   font-size: 0.82rem;
@@ -479,8 +439,10 @@ textarea:focus {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
+/* category badge & deadline */
 .task-category-badge {
   display: inline-block;
   padding: 0.18rem 0.45rem;
@@ -489,28 +451,30 @@ textarea:focus {
   font-weight: 700;
   background: rgba(43, 60, 255, 0.08);
   color: #2b3cff;
+  margin-left: 6px;
 }
 .task-deadline {
   font-size: 0.78rem;
   color: var(--muted);
 }
 
-/* actions */
+/* actions: fix overflow and sizing */
 .task-actions {
   margin-left: auto;
   display: flex;
-  gap: 0.45rem;
+  gap: 0.35rem;
   align-items: center;
+  flex: 0 0 auto;
 }
 .action-btn {
   background: transparent;
   border: none;
-  padding: 0.45rem;
+  padding: 6px;
   border-radius: 8px;
   cursor: pointer;
   color: var(--muted);
-  min-width: var(--touch);
-  min-height: var(--touch);
+  min-width: 40px; /* smaller than earlier var(--touch) so actions don't force overflow */
+  min-height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -523,7 +487,7 @@ textarea:focus {
   transform: translateY(-2px);
 }
 .action-btn i {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 .action-btn.delete {
   color: var(--danger);
@@ -547,7 +511,12 @@ textarea:focus {
   color: #1f2ad6;
 }
 
-/* empty list */
+/* ensure add-task form button doesn't overflow */
+.add-task-form button[type="submit"] {
+  white-space: nowrap;
+}
+
+/* empty list state */
 .task-list .empty {
   text-align: center;
   color: var(--muted);
@@ -555,53 +524,63 @@ textarea:focus {
   font-weight: 600;
 }
 
-/* profile */
+/* PROFILE: more breathing room and spacing (user reported tightness) */
+#profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; /* increase gap between blocks */
+  padding-bottom: 0.6rem;
+}
+
+/* Profile card adjustments */
 .profile-card {
   display: flex;
-  gap: 0.9rem;
-  align-items: center;
-  padding: 1.4rem;
+  gap: 1.15rem;
+  align-items: flex-start;
+  padding: 1.6rem;
   border-radius: 12px;
   background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.03);
   box-shadow: var(--shadow-soft);
+  min-height: 92px;
 }
 .profile-avatar {
-  width: 72px;
-  height: 72px;
+  width: 78px;
+  height: 78px;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--accent-blue), #cfd7ff);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   color: var(--text);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  flex: 0 0 78px;
 }
 .profile-info {
   display: flex;
   flex-direction: column;
   gap: 0.18rem;
-  line-height: 1.25;
+  line-height: 1.28;
 }
 .profile-info h3 {
   margin-bottom: 0.18rem;
-  font-size: 1.12rem;
+  font-size: 1.14rem;
   letter-spacing: -0.3px;
 }
 .profile-info p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.96rem;
 }
 
-/* profile details */
+/* profile details card */
 .profile-details {
-  margin-top: 0.6rem;
-  padding: 1.15rem;
+  margin-top: 0;
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.6rem;
   border-radius: 14px;
   background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.03);
@@ -609,7 +588,7 @@ textarea:focus {
 }
 .profile-details h4 {
   margin: 0;
-  margin-bottom: 0.4rem;
+  font-size: 0.98rem;
 }
 .profile-details p {
   margin: 0;
@@ -619,30 +598,25 @@ textarea:focus {
   font-weight: 600;
 }
 
-/* theme toggle */
-#toggle-theme {
-  padding: 0.6rem 0.9rem;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(255, 255, 255, 0.85)
-  );
-  color: var(--text);
-  cursor: pointer;
-  font-weight: 700;
-  box-shadow: var(--shadow-small);
-  min-height: var(--touch);
+/* theme toggle layout */
+.theme-toggle {
+  margin-top: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
 }
-#toggle-theme:hover {
-  transform: translateY(-2px);
+#toggle-theme {
+  flex: 1 1 auto;
+  min-height: 48px;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.98rem;
 }
 
-/* achievements */
+/* achievements spacing */
 .achievements {
-  margin-top: 0.8rem;
-  padding: 1.05rem;
+  margin-top: 0.6rem;
+  padding: 1.15rem;
   border-radius: 14px;
   background: var(--card-bg);
   box-shadow: var(--shadow-small);
@@ -653,7 +627,7 @@ textarea:focus {
   padding-left: 0.75rem;
 }
 .achievements li {
-  padding: 0.6rem 0;
+  padding: 0.7rem 0;
   display: flex;
   gap: 0.6rem;
   align-items: center;
@@ -668,7 +642,7 @@ textarea:focus {
 /* streak */
 .streak-section {
   margin-top: 0.9rem;
-  padding: 1.05rem;
+  padding: 1.15rem;
   border-radius: 14px;
   background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.03);
@@ -690,15 +664,7 @@ textarea:focus {
   margin-left: 0.4rem;
 }
 
-/* buttons / base elements */
-button {
-  font-family: var(--font);
-  font-weight: 700;
-  border: none;
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-}
+/* buttons and inputs baseline */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -712,17 +678,6 @@ button {
   border: none;
   cursor: pointer;
 }
-.btn.secondary {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(255, 255, 255, 0.85)
-  );
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  color: var(--text);
-}
-
-/* inputs baseline */
 input,
 textarea,
 select {
@@ -733,21 +688,6 @@ select {
   border: 1px solid rgba(0, 0, 0, 0.06);
   padding: 0.6rem 0.8rem;
   background: rgba(255, 255, 255, 0.95);
-}
-textarea {
-  min-height: 84px;
-  resize: vertical;
-}
-
-/* utility */
-.badge {
-  display: inline-block;
-  padding: 0.18rem 0.45rem;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 0.78rem;
-  background: rgba(0, 0, 0, 0.06);
-  color: var(--muted);
 }
 
 /* toast */
@@ -772,48 +712,6 @@ textarea {
   pointer-events: auto;
 }
 
-/* modal */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: grid;
-  place-items: center;
-  z-index: 500;
-}
-.modal {
-  width: min(420px, calc(100% - 32px));
-  background: var(--card-bg);
-  border-radius: 14px;
-  padding: 1rem;
-  box-shadow: var(--shadow-soft);
-}
-
-/* code / table / summary fallbacks */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
-}
-th,
-td {
-  padding: 0.65rem 0.8rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  text-align: left;
-}
-pre,
-code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
-    "Segoe UI Mono", monospace;
-  background: rgba(0, 0, 0, 0.04);
-  padding: 0.5rem;
-  border-radius: 8px;
-  color: var(--text);
-  overflow: auto;
-  font-size: 0.9rem;
-}
-
 /* dark mode */
 body.dark {
   --bg: #0b0c0d;
@@ -835,14 +733,31 @@ body.dark .nav-btn.active {
 body.dark .task-item:hover {
   box-shadow: 0 10px 30px rgba(255, 255, 255, 0.02);
 }
-body.dark .profile-card,
-body.dark .profile-details,
-body.dark .achievements,
-body.dark .streak-section {
-  border-color: rgba(255, 255, 255, 0.03);
+
+/* responsive tweaks */
+@media (max-width: 420px) {
+  .profile-card {
+    padding: 1.25rem;
+    gap: 1rem;
+    min-height: 88px;
+  }
+  .profile-avatar {
+    width: 68px;
+    height: 68px;
+    flex: 0 0 68px;
+    font-size: 1.6rem;
+  }
+  .action-btn {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px;
+  }
+  .task-title {
+    font-size: 0.95rem;
+  }
 }
 
-/* responsive */
+/* wider screens */
 @media (min-width: 481px) {
   .main-container {
     padding: 1.5rem;
@@ -857,5 +772,3 @@ body.dark .streak-section {
     margin-top: 1rem;
   }
 }
-
-/* End of stylesheet */
